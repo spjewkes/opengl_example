@@ -199,7 +199,12 @@ int main()
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 
+	double xpos = 0;
+	double ypos = 0;
 	float angle = 0.0;
+	float x_axis = 1.0;
+	float y_axis = 0.0;
+	float z_axis = 0.0;
 
 	auto tp1 = chrono::system_clock::now();
 	auto tp2 = chrono::system_clock::now();
@@ -216,7 +221,7 @@ int main()
 		glm::mat4 view = glm::lookAt(
 			glm::vec3(3,2,3), // The position of the camera
 			glm::vec3(0,0,0), // and looks at the origin
-			glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+			glm::vec3(x_axis, y_axis, z_axis)  // Head is up (set to 0,-1,0 to look upside-down)
 			);
   
 		// Model matrix : an identity matrix (model will be at the origin)
@@ -225,14 +230,8 @@ int main()
 		// Update model to create a rotation
 		model = glm::rotate(model, angle, glm::vec3(0.125, 1.0, 0.25));
 	
-		// Our ModelViewProjection : multiplication of our 3 matrices
+		// our ModelViewProjection : multiplication of our 3 matrices
 		glm::mat4 mvp = projection * view * model;
-
-		angle += 0.01f;
-		if (angle >= 360.0f)
-		{
-			angle = 0.0f;
-		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -294,6 +293,21 @@ int main()
 		char title[256];
 		snprintf(title, 256, "OpenGL example - %3.f fps", 1.0 / elapsed_time.count());
 		glfwSetWindowTitle(window, title);
+
+		// Mouse position and calculate the angles
+		glfwGetCursorPos(window, &xpos, &ypos);
+
+		angle -= 0.005f * elapsed_time.count() * static_cast<float>(width / 2 - xpos);
+
+		// Check keyboard
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+			x_axis = (1.0f ? x_axis == 0.0f : 1.0f);
+
+		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+			y_axis = (1.0f ? y_axis == 0.0f : 1.0f);
+
+		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+			z_axis = (1.0f ? z_axis == 0.0f : 1.0f);
 	}
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
