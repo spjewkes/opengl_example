@@ -76,6 +76,62 @@ static const GLfloat g_vertex_buffer_data[] = {
 	 1.0f, -1.0f, -1.0f
 };
 
+static const GLfloat g_normal_buffer_data[] = {
+	// Face 1
+	 0.0f,  0.0f, -1.0f,
+	 0.0f,  0.0f, -1.0f,
+	 0.0f,  0.0f, -1.0f,
+
+	 0.0f,  0.0f, -1.0f,
+	 0.0f,  0.0f, -1.0f,
+	 0.0f,  0.0f, -1.0f,
+
+	 // Face 2
+	 0.0f, -1.0f,  0.0f,
+	 0.0f, -1.0f,  0.0f,
+	 0.0f, -1.0f,  0.0f,
+
+	 0.0f, -1.0f,  0.0f,
+	 0.0f, -1.0f,  0.0f,
+	 0.0f, -1.0f,  0.0f,
+
+	 // Face 3
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+
+	 // Face 4
+	 0.0f,  0.0f,  1.0f,
+	 0.0f,  0.0f,  1.0f,
+	 0.0f,  0.0f,  1.0f,
+
+	 0.0f,  0.0f,  1.0f,
+	 0.0f,  0.0f,  1.0f,
+	 0.0f,  0.0f,  1.0f,
+
+	 // Face 5
+	 0.0f,  1.0f,  0.0f,
+	 0.0f,  1.0f,  0.0f,
+	 0.0f,  1.0f,  0.0f,
+
+	 0.0f,  1.0f,  0.0f,
+	 0.0f,  1.0f,  0.0f,
+	 0.0f,  1.0f,  0.0f,
+
+	 // Face 6
+	 1.0f,  0.0f,  0.0f,
+	 1.0f,  0.0f,  0.0f,
+	 1.0f,  0.0f,  0.0f,
+
+	 1.0f,  0.0f,  0.0f,
+	 1.0f,  0.0f,  0.0f,
+	 1.0f,  0.0f,  0.0f,
+};
+
 // Define the UV coordinates for each cube face
 // The vertical axis is flipped due to the flipping of the image
 static const GLfloat g_uv_buffer_data[] = {
@@ -189,6 +245,12 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 
+	// Create the normal buffer
+	GLuint normal_buffer;
+	glGenBuffers(1, &normal_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_normal_buffer_data), g_normal_buffer_data, GL_STATIC_DRAW);
+
 	// Load texture
 	GLuint cube_texture = load_png("res/texture.png");
 
@@ -269,6 +331,18 @@ int main()
 		glVertexAttribPointer(
 			1,
 			2,
+			GL_FLOAT,
+			GL_TRUE,
+			0,
+			(void*)0
+			);
+
+		// Third attribute buffer: normals
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
+		glVertexAttribPointer(
+			2,
+			3,
 			GL_FLOAT,
 			GL_TRUE,
 			0,

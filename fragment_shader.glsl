@@ -2,6 +2,7 @@
 
 // Interpolated values from the vertex shaders
 in vec2 UV;
+in vec3 normal;
 
 out vec3 color;
 
