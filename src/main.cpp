@@ -292,11 +292,10 @@ int main()
 		snprintf(title, 256, "OpenGL example - %3.f fps", 1.0 / elapsed_time.count());
 		glfwSetWindowTitle(window, title);
 
-		// Mouse position and calculate the angles
+		// Move object based on mouse position relative to center
 		glfwGetCursorPos(window, &xpos, &ypos);
-
-		x_angle -= 0.005f * elapsed_time.count() * static_cast<float>(width / 2 - xpos);
-		y_angle -= 0.005f * elapsed_time.count() * static_cast<float>(height / 2 - ypos);
+		x_angle = 0.005f * static_cast<float>(width / 2 - xpos);
+		y_angle = 0.005f * static_cast<float>(height / 2 - ypos);
 	}
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
