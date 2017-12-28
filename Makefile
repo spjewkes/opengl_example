@@ -6,10 +6,10 @@ EXE=run_gl3_example
 OBJ_DIR=obj
 SRC_DIR=src
 
-_DEPS=utility.hpp
+_DEPS=utility.hpp wavefront_obj.hpp
 DEPS=$(patsubst %,$(SRC_DIR)/%,$(_DEPS))
 
-_OBJ=main.o utility.o
+_OBJ=main.o utility.o wavefront_obj.o
 OBJ=$(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
 
 OS := $(shell uname)

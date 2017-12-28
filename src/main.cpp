@@ -16,6 +16,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include "utility.hpp"
+#include "wavefront_obj.hpp"
 
 using namespace std;
 
@@ -229,33 +230,23 @@ int main()
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
+	// Create the buffers
 	GLuint vertex_array_id;
 	glGenVertexArrays(1, &vertex_array_id);
 	glBindVertexArray(vertex_array_id);
 
-	// Create the vertex buffer
-	GLuint vertex_buffer;
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	WavefrontObj object("res/cube.obj");
+	object.dump();
 
-	// Create the UV buffer
-	GLuint uv_buffer;
-	glGenBuffers(1, &uv_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
-
-	// Create the normal buffer
-	GLuint normal_buffer;
-	glGenBuffers(1, &normal_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_normal_buffer_data), g_normal_buffer_data, GL_STATIC_DRAW);
+	GLuint vertex_buffer = object.create_vertex_buffer();
+	GLuint uv_buffer = object.create_tex_coord_buffer();
+	GLuint normal_buffer = object.create_normal_buffer();
 
 	// Load texture
 	GLuint cube_texture = load_png("res/texture.png");
 
 	// Create and compile our GLSL program from the shaders
-	GLuint program_id = load_shaders( "vertex_shader.glsl", "fragment_shader.glsl" );
+	GLuint program_id = load_shaders( "src/vertex_shader.glsl", "src/fragment_shader.glsl" );
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
