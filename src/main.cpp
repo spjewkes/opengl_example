@@ -101,7 +101,7 @@ int main()
 		glm::mat4 view = glm::lookAt(
 			glm::vec3(3,2,3), // The position of the camera
 			glm::vec3(0,0,0), // and looks at the origin
-			glm::vec3(0, -1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+			glm::vec3(0,-1,0)  // Head is up (set to 0,-1,0 to look upside-down)
 			);
   
 		// Model matrix : an identity matrix (model will be at the origin)
@@ -118,13 +118,15 @@ int main()
 		// Use our shader
 		glUseProgram(program_id);
 
-		// Get a handle for our "MVP" uniform
-		// Only during the initialisation
-		GLuint matrix_id = glGetUniformLocation(program_id, "MVP");
-  
-		// Send our transformation to the currently bound shader, in the "MVP" uniform
-		// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
-		glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);
+		// Set up uniforms
+		GLuint mvp_id = glGetUniformLocation(program_id, "MVP");
+		glUniformMatrix4fv(mvp_id, 1, GL_FALSE, &mvp[0][0]);
+
+		GLuint m_id = glGetUniformLocation(program_id, "M");
+		glUniformMatrix4fv(m_id, 1, GL_FALSE, &model[0][0]);
+
+		GLuint v_id = glGetUniformLocation(program_id, "V");
+		glUniformMatrix4fv(v_id, 1, GL_FALSE, &view[0][0]);
 
 		// Texture uniform
 		GLuint tex_id = glGetUniformLocation(program_id, "Tex_Cube");

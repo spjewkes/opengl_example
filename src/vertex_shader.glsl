@@ -11,6 +11,8 @@ layout(location = 2) in vec3 vertexNormal;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;	
+uniform mat4 M;	
+uniform mat4 V;	
 
 // Output tex coords
 out vec2 UV;
@@ -27,5 +29,5 @@ void main()
 	UV = vertexUV;
 
 	// Normal
-	normal = (MVP * vec4(vertexNormal,1)).xyz;
+	normal = (V * M * vec4(vertexNormal,0)).xyz;
 }

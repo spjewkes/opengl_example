@@ -12,5 +12,6 @@ uniform sampler2D Tex_Cube;
 void main()
 {
 	vec3 light = vec3(3, 2, 3);
-	color = texture( Tex_Cube, UV ).rgb * dot(normalize(light), normalize(normal));
+	float intensity = clamp(dot(normalize(light), normalize(normal)), 0, 1);
+	color = texture( Tex_Cube, UV ).rgb * intensity;
 }
