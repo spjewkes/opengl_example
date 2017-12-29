@@ -194,6 +194,10 @@ GLuint load_shaders(const char * vertex_file_path,const char * fragment_file_pat
 		glGetShaderInfoLog(vertex_shader_id, info_log_length, NULL, &vertex_shader_error_message[0]);
 		cerr << &vertex_shader_error_message[0] << endl;
 	}
+	if (!result)
+	{
+		return 0;
+	}
 
 	// Compile Fragment Shader
 	cout << "Compiling shader: " << fragment_file_path << endl;
@@ -209,6 +213,10 @@ GLuint load_shaders(const char * vertex_file_path,const char * fragment_file_pat
 		vector<char> fragment_shader_error_message(info_log_length+1);
 		glGetShaderInfoLog(fragment_shader_id, info_log_length, NULL, &fragment_shader_error_message[0]);
 		cerr << &fragment_shader_error_message[0] << endl;
+	}
+	if (!result)
+	{
+		return 0;
 	}
 
 	// Link the program

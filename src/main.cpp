@@ -76,6 +76,11 @@ int main()
 
 	// Create and compile our GLSL program from the shaders
 	GLuint program_id = load_shaders( "src/vertex_shader.glsl", "src/fragment_shader.glsl" );
+	if (!program_id)
+	{
+		cerr << "Error detected when loading shaders. Aborting.\n";
+		abort();
+	}
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
