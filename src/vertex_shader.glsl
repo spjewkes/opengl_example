@@ -27,5 +27,5 @@ void main()
 	UV = vertexUV;
 
 	// Normal
-	normal = vertexNormal;
+	normal = (MVP * vec4(vertexNormal,1)).xyz;
 }
