@@ -113,6 +113,7 @@ int main()
 		// our ModelViewProjection : multiplication of our 3 matrices
 		glm::mat4 mvp = projection * view * model;
 
+		glClearColor(0.0f, 0.0f, 0.05f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Use our shader
