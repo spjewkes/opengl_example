@@ -75,7 +75,7 @@ int main()
 	GLuint cube_texture = load_png("res/texture.png");
 
 	// Create and compile our GLSL program from the shaders
-	GLuint program_id = load_shaders( "src/vertex_shader.glsl", "src/fragment_shader.glsl" );
+	GLuint program_id = load_shaders( "res/vertex_shader.glsl", "res/fragment_shader.glsl" );
 	if (!program_id)
 	{
 		cerr << "Error detected when loading shaders. Aborting.\n";
