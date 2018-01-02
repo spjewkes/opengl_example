@@ -20,6 +20,7 @@ public:
 	~WavefrontObj() {}
 
 	void dump();
+	size_t num_vertices() const { return m_vertices.size(); }
 
 	// Create GL buffers
 	GLuint create_vertex_buffer();

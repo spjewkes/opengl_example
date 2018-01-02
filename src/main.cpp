@@ -22,7 +22,7 @@ using namespace std;
 
 float g_zoom = 1.0f;
 
-void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow *, double, double yoffset)
 {
 	g_zoom += (yoffset / 10.0f);
 
@@ -192,7 +192,7 @@ int main()
 			);
 
 		// Draw the array
-		glDrawArrays(GL_TRIANGLES, 0, 12*3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+		glDrawArrays(GL_TRIANGLES, 0, object.num_vertices()); // Starting from vertex 0; 3 vertices total -> 1 triangle
 		glDisableVertexAttribArray(0);
 
 		// Swap buffers
