@@ -20,6 +20,18 @@
 
 using namespace std;
 
+float g_zoom = 1.0f;
+
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+{
+	g_zoom += (yoffset / 10.0f);
+
+	if (g_zoom < 0.1f)
+	{
+		g_zoom = 0.1f;
+	}
+}
+
 int main()
 {
 	int width = 1024;
@@ -86,6 +98,8 @@ int main()
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 
+	glfwSetScrollCallback(window, scroll_callback);
+
 	double xpos = 0;
 	double ypos = 0;
 	float x_angle = 0.0;
@@ -110,10 +124,10 @@ int main()
 			);
   
 		// Model matrix : an identity matrix (model will be at the origin)
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(g_zoom);
 
 		// Update model to create a rotation
-		model = glm::rotate(model, x_angle, glm::vec3(0.0, 1.0, 0.0)) * glm::rotate(model, y_angle, glm::vec3(1.0, 0.0, 0.0));
+		model = glm::rotate(model, x_angle, glm::vec3(0.0, 1.0, 0.0)) * glm::rotate(model, y_angle, glm::vec3(1.0, 0.0, 0.0)) * glm::scale(model, glm::vec3(g_zoom, g_zoom, g_zoom));
 	
 		// our ModelViewProjection : multiplication of our 3 matrices
 		glm::mat4 mvp = projection * view * model;
@@ -199,7 +213,7 @@ int main()
 		x_angle = 0.005f * static_cast<float>(width / 2 - xpos);
 		y_angle = 0.005f * static_cast<float>(height / 2 - ypos);
 	}
-	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
+	while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
 
 	return 0;
 }
