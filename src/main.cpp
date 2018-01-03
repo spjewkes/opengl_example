@@ -15,6 +15,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include "options.hpp"
 #include "utility.hpp"
 #include "wavefront_obj.hpp"
 
@@ -32,10 +33,11 @@ void scroll_callback(GLFWwindow *, double, double yoffset)
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-	int width = 1024;
-	int height = 768;
+	Options options(argc, argv);
+	int width = options.width();
+	int height = options.height();
 
 	// Initialise GLFW
 	if( !glfwInit() )
@@ -76,8 +78,12 @@ int main()
 	glGenVertexArrays(1, &vertex_array_id);
 	glBindVertexArray(vertex_array_id);
 
-	WavefrontObj object("res/cube.obj");
-	object.dump();
+	cout << "Loading file: " << options.filepath() << endl;
+	WavefrontObj object(options.filepath());
+	if (options.verbose())
+	{
+		object.dump();
+	}
 
 	GLuint vertex_buffer = object.create_vertex_buffer();
 	GLuint uv_buffer = object.create_tex_coord_buffer();
