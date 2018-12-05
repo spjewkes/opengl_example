@@ -20,6 +20,9 @@ out vec2 UV;
 // Output normal
 out vec3 normal;
 
+// Output vertex
+out vec3 vertex;
+
 void main()
 {
 	// Output position of the vertex, in clip space : MVP * position
@@ -30,4 +33,7 @@ void main()
 
 	// Normal
 	normal = (V * M * vec4(vertexNormal,0)).xyz;
+
+	// Vertex
+	vertex = (V * M * vec4(vertexPosition_modelspace,1)).xyz;
 }

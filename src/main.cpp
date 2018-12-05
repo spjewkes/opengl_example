@@ -84,13 +84,15 @@ int main(int argc, char *argv[])
 	{
 		object.dump();
 	}
+	cout << "Object has " << object.num_vertices() << " number of vertices\n";
 
 	GLuint vertex_buffer = object.create_vertex_buffer();
 	GLuint uv_buffer = object.create_tex_coord_buffer();
 	GLuint normal_buffer = object.create_normal_buffer();
 
 	// Load texture
-	GLuint cube_texture = load_png("res/texture.png");
+	cout << "Using texture: " << options.imagepath() << "\n";
+	GLuint cube_texture = load_png(options.imagepath());
 
 	// Create and compile our GLSL program from the shaders
 	GLuint program_id = load_shaders( "res/vertex_shader.glsl", "res/fragment_shader.glsl" );
@@ -211,7 +213,7 @@ int main(int argc, char *argv[])
 		tp1 = tp2;
 		
 		char title[256];
-		snprintf(title, 256, "OpenGL example - %3.f fps", 1.0 / elapsed_time.count());
+		snprintf(title, 256, "WIP - OpenGL example - %3.f fps", 1.0 / elapsed_time.count());
 		glfwSetWindowTitle(window, title);
 
 		// Move object based on mouse position relative to center

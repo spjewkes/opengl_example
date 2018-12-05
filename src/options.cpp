@@ -13,8 +13,12 @@ void Options::initialize(int argc, char *argv[])
 		{"file", required_argument, 0, 'f'},
 		{"width", required_argument, 0, 'w'},
 		{"height", required_argument, 0, 'h'},
+		{"image", required_argument, 0, 'i'},
 		{0, 0, 0, 0}
 	};
+
+	strcpy(m_filepath, "");
+	strcpy(m_imagepath, "res/texture.png");
 
 	while (true)
 	{
@@ -41,12 +45,15 @@ void Options::initialize(int argc, char *argv[])
 			m_height = atoi(optarg);
 			break;
 		case 'f':
-			m_filepath = optarg;
+			strcpy(m_filepath, optarg);
+			break;
+		case 'i':
+			strcpy(m_imagepath, optarg);
 			break;
 		}
 	}
 
-	if (!m_filepath)
+	if (strlen(m_filepath) == 0)
 	{
 		cerr << "ERROR: No Wavefront Obj file specified. Aborting.\n";
 		display_help(argv[0]);
@@ -61,4 +68,5 @@ void Options::display_help(const char *app_name)
 	cout << "  --file <obj file> - Wavefront Obj file to load.\n";
 	cout << "  --width <width> - width of display in pixels.\n";
 	cout << "  --height <height> - height of display in pixels.\n";
+	cout << "  --image <png file> - PNG of texture to use.\n";
 }
