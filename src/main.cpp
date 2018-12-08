@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 
 	// Open a window and create its OpenGL context
 	GLFWwindow* window;
-	window = glfwCreateWindow( width, height, "OpenGL example", NULL, NULL);
+	window = glfwCreateWindow( width, height, "OpenGL Object Viewer", NULL, NULL);
 	if( window == NULL )
 	{
 		cerr << "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n";
@@ -113,6 +113,10 @@ int main(int argc, char *argv[])
 	float x_angle = 0.0;
 	float y_angle = 0.0;
 
+	char title[256];
+	snprintf(title, 256, "WIP - OpenGL Object Viewer");
+	glfwSetWindowTitle(window, title);
+	
 	auto tp1 = chrono::system_clock::now();
 	auto tp2 = chrono::system_clock::now();
 
@@ -140,7 +144,7 @@ int main(int argc, char *argv[])
 		// our ModelViewProjection : multiplication of our 3 matrices
 		glm::mat4 mvp = projection * view * model;
 
-		glClearColor(0.0f, 0.0f, 0.05f, 0.0f);
+		glClearColor(0.25f, 0.25f, 0.25f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Use our shader
@@ -213,13 +217,25 @@ int main(int argc, char *argv[])
 		tp1 = tp2;
 		
 		char title[256];
-		snprintf(title, 256, "WIP - OpenGL example - %3.f fps", 1.0 / elapsed_time.count());
+		snprintf(title, 256, "WIP - OpenGL Object Viewer - %3.f fps", 1.0 / elapsed_time.count());
 		glfwSetWindowTitle(window, title);
 
 		// Move object based on mouse position relative to center
+		double old_xpos = xpos;
+		double old_ypos = ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-		x_angle = 0.005f * static_cast<float>(width / 2 - xpos);
-		y_angle = 0.005f * static_cast<float>(height / 2 - ypos);
+
+		if (fabs(old_xpos - xpos) > DBL_EPSILON ||
+			fabs(old_ypos - ypos) > DBL_EPSILON)
+		{
+			x_angle = 0.005f * static_cast<float>(width / 2 - xpos);
+			y_angle = 0.005f * static_cast<float>(height / 2 - ypos);
+		}
+		else
+		{
+			x_angle += 0.5 * elapsed_time.count();
+			y_angle += 0.25 * elapsed_time.count();
+		}
 	}
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
 
