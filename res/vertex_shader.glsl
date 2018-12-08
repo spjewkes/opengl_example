@@ -13,6 +13,8 @@ layout(location = 2) in vec3 vertexNormal;
 uniform mat4 MVP;	
 uniform mat4 M;	
 uniform mat4 V;	
+uniform vec3 Camera_Pos;
+uniform vec3 Light_Pos;
 
 // Output tex coords
 out vec2 UV;
@@ -22,6 +24,12 @@ out vec3 normal;
 
 // Output vertex
 out vec3 vertex;
+
+// Output eye
+out vec3 eye;
+
+// Output light
+out vec3 light;
 
 void main()
 {
@@ -36,4 +44,10 @@ void main()
 
 	// Vertex
 	vertex = (V * M * vec4(vertexPosition_modelspace,1)).xyz;
+
+	// Eye
+	eye = (V * vec4(Camera_Pos, 1)).xyz;
+
+	// Light
+	light = (V * vec4(Light_Pos, 1)).xyz;
 }

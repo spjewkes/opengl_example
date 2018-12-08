@@ -120,6 +120,10 @@ int main(int argc, char *argv[])
 	auto tp1 = chrono::system_clock::now();
 	auto tp2 = chrono::system_clock::now();
 
+	auto camera_pos = glm::vec3(3, 2, 3);
+	auto light_pos = glm::vec3(3, 2, 3);
+	auto light_col = glm::vec3(1, 1, 1);
+
 	do
 	{
 		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
@@ -130,7 +134,7 @@ int main(int argc, char *argv[])
   
 		// Camera matrix
 		glm::mat4 view = glm::lookAt(
-			glm::vec3(3,2,3), // The position of the camera
+			camera_pos, // The position of the camera
 			glm::vec3(0,0,0), // and looks at the origin
 			glm::vec3(0,-1,0)  // Head is up (set to 0,-1,0 to look upside-down)
 			);
@@ -159,6 +163,17 @@ int main(int argc, char *argv[])
 
 		GLuint v_id = glGetUniformLocation(program_id, "V");
 		glUniformMatrix4fv(v_id, 1, GL_FALSE, &view[0][0]);
+
+		// Camera uniform
+		GLuint cam_pos_id = glGetUniformLocation(program_id, "Camera_Pos");
+		glUniform3fv(cam_pos_id, 1, &camera_pos[0]);
+
+		// Light uniforms
+		GLuint light_pos_id = glGetUniformLocation(program_id, "Light_Pos");
+		glUniform3fv(light_pos_id, 1, &light_pos[0]);
+
+		GLuint light_col_id = glGetUniformLocation(program_id, "Light_Col");
+		glUniform3fv(light_col_id, 1, &light_col[0]);
 
 		// Texture uniform
 		GLuint tex_id = glGetUniformLocation(program_id, "Tex_Cube");

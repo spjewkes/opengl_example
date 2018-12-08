@@ -4,38 +4,40 @@
 in vec2 UV;
 in vec3 normal;
 in vec3 vertex;
+in vec3 eye;
+in vec3 light;
 
 out vec3 color;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D Tex_Cube;
+uniform vec3 Light_Col;
 
 void main()
 {
-	vec3 ambient = vec3(0.05, 0.05, 0.05) * texture( Tex_Cube, UV ).rgb;
+	// Normal of fragment
+	vec3 norm = normalize(normal);
 
-	vec3 light = vec3(3, 2, 3);
+	// Normalized vector of light from fragment
 	vec3 to_light = normalize(light - vertex);
 
-	float cos_angle = clamp(dot(normalize(normal), to_light), 0.0, 1.0);
+	// Distance of light to fragment
+	float distance = length(light - vertex);
+	distance = 1.0;
 
-	vec3 diffuse = texture( Tex_Cube, UV ).rgb * cos_angle;
+	// Calculate ambient color
+	vec3 ambient = vec3(0.1, 0.1, 0.1) * texture( Tex_Cube, UV ).rgb;
 
-	vec3 reflection = normalize(2.0 * dot(normalize(normal), to_light) * normalize(normal) - to_light);
-	vec3 to_camera = normalize(-1.0 * vertex);
+	// Calculate diffuse color
+	float cos_angle = clamp(dot(norm, to_light), 0.0, 1.0);
+	vec3 diffuse = texture( Tex_Cube, UV ).rgb * cos_angle / (distance * distance);
 
-	float shininess = 12.0;
-	cos_angle = clamp(dot(reflection, to_camera), 0.0, 1.0);
-	cos_angle = pow(cos_angle, shininess);
+	// Calculat specular color
+	vec3 to_camera = normalize(eye - vertex);
+	vec3 reflection = reflect(-to_light, norm);
 
-	vec3 specular = vec3(0, 0, 0);
-
-	if (cos_angle > 0.0)
-	{
-		vec3 light_color = vec3(1, 1, 1);
-		specular = light_color * cos_angle;
-		diffuse = diffuse * (1.0 - cos_angle);
-	}
+	float cos_alpha = clamp(dot(to_camera, reflection), 0.0, 1.0);
+	vec3 specular = Light_Col * pow(cos_alpha, 5) / (distance * distance);
 
 	color = ambient + diffuse + specular;
 }
