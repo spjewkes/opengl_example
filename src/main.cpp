@@ -21,7 +21,7 @@
 
 using namespace std;
 
-float g_zoom = 1.0f;
+float g_zoom = 3.0f;
 
 void scroll_callback(GLFWwindow *, double, double yoffset)
 {
@@ -30,6 +30,10 @@ void scroll_callback(GLFWwindow *, double, double yoffset)
 	if (g_zoom < 0.1f)
 	{
 		g_zoom = 0.1f;
+	}
+	else if (g_zoom > 100.0f)
+	{
+		g_zoom = 100.0f;
 	}
 }
 
@@ -132,6 +136,8 @@ int main(int argc, char *argv[])
 		// Or, for an ortho camera :
 		// glm::mat4 projection = glm::ortho(-2.0f,2.0f,-2.0f,2.0f,0.0f,100.0f); // In world coordinates
   
+		camera_pos.z = g_zoom;
+
 		// Camera matrix
 		glm::mat4 view = glm::lookAt(
 			camera_pos, // The position of the camera
@@ -140,10 +146,10 @@ int main(int argc, char *argv[])
 			);
   
 		// Model matrix : an identity matrix (model will be at the origin)
-		glm::mat4 model = glm::mat4(g_zoom);
+		glm::mat4 model = glm::mat4(1);
 
 		// Update model to create a rotation
-		model = glm::rotate(model, x_angle, glm::vec3(0.0, 1.0, 0.0)) * glm::rotate(model, y_angle, glm::vec3(1.0, 0.0, 0.0)) * glm::scale(model, glm::vec3(g_zoom, g_zoom, g_zoom));
+		model = glm::rotate(model, x_angle, glm::vec3(0.0, 1.0, 0.0)) * glm::rotate(model, y_angle, glm::vec3(1.0, 0.0, 0.0));// * glm::scale(model, glm::vec3(g_zoom, g_zoom, g_zoom));
 	
 		// our ModelViewProjection : multiplication of our 3 matrices
 		glm::mat4 mvp = projection * view * model;
