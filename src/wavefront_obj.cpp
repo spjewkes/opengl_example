@@ -1,6 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <limits>
+#include <cmath>
 #include "wavefront_obj.hpp"
 
 using namespace std;
@@ -165,6 +167,37 @@ GLuint WavefrontObj::create_normal_buffer()
 	glBindBuffer(GL_ARRAY_BUFFER, id);
 	glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(float), m_normals.data(), GL_STATIC_DRAW);
 	return id;
+}
+
+float WavefrontObj::get_scaler()
+{
+	// The scaler tries to give an idea of how to scale the box based on the diagonal length
+	// of a cube that tightly surrounds the object. This enables the program to try and scale
+	// objects as best as possible for the viewer
+
+	float xmin = numeric_limits<float>::max();
+	float ymin = numeric_limits<float>::max();
+	float zmin = numeric_limits<float>::max();
+	float xmax = numeric_limits<float>::min();
+	float ymax = numeric_limits<float>::min();
+	float zmax = numeric_limits<float>::min();
+
+	const size_t count = m_vertices.size();
+	for (size_t i = 0; i<count; i+=3)
+	{
+		xmin = min(xmin, m_vertices[i+0]);
+		xmax = max(xmax, m_vertices[i+0]);
+		ymin = min(ymin, m_vertices[i+1]);
+		ymax = max(ymax, m_vertices[i+1]);
+		zmin = min(zmin, m_vertices[i+2]);
+		zmax = max(zmax, m_vertices[i+2]);
+	}
+
+	float x = xmax - xmin;
+	float y = ymax - ymin;
+	float z = zmax - zmin;
+
+	return sqrtf((x * x) + (y * y) + (z * z));
 }
 
 void WavefrontObj::dump()

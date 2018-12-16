@@ -128,6 +128,10 @@ int main(int argc, char *argv[])
 	auto light_pos = glm::vec3(3, 2, 3);
 	auto light_col = glm::vec3(1, 1, 1);
 
+	// The scaler returns the diagonal length of the bounding box of the object being viewed.
+	// Use this to try and create a scale value for the object to keep them reasonably scaled in the window.
+	auto scaler = 1.732f / object.get_scaler();
+
 	do
 	{
 		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
@@ -149,7 +153,7 @@ int main(int argc, char *argv[])
 		glm::mat4 model = glm::mat4(1);
 
 		// Update model to create a rotation
-		model = glm::rotate(model, x_angle, glm::vec3(0.0, 1.0, 0.0)) * glm::rotate(model, y_angle, glm::vec3(1.0, 0.0, 0.0));// * glm::scale(model, glm::vec3(g_zoom, g_zoom, g_zoom));
+		model = glm::rotate(model, x_angle, glm::vec3(0.0, 1.0, 0.0)) * glm::rotate(model, y_angle, glm::vec3(1.0, 0.0, 0.0)) * glm::scale(model, glm::vec3(scaler, scaler, scaler));
 	
 		// our ModelViewProjection : multiplication of our 3 matrices
 		glm::mat4 mvp = projection * view * model;

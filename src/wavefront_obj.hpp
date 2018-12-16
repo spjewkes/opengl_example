@@ -27,6 +27,9 @@ public:
 	GLuint create_tex_coord_buffer();
 	GLuint create_normal_buffer();
 
+	// Get scale value
+	float get_scaler();
+	
 private:
 	/// Generate data from file
 	void generate_data();
