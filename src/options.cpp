@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <cstring>
 #include <getopt.h>
 #include "options.hpp"
 

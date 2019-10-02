@@ -17,6 +17,9 @@ OS := $(shell uname)
 ifeq ($(OS),Darwin)
 # Mac OS
 	LIBS+=-framework OpenGL -lGLEW -lglfw -lpng
+else
+# Assume Linux
+	LIBS+=-lOpenGL -lGLEW -lglfw -lpng
 endif
 
 default: debug
