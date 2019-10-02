@@ -38,6 +38,12 @@ void scroll_callback(GLFWwindow *, double, double yoffset)
 	}
 }
 
+void error_callback(int error, const char *desc)
+{
+    cerr << "Error code: " << error << endl;
+    cerr << desc << endl;
+}
+
 int main(int argc, char *argv[])
 {
 	Options options(argc, argv);
@@ -51,6 +57,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	glfwSetErrorCallback(error_callback);
+	
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Set up for OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -62,7 +70,6 @@ int main(int argc, char *argv[])
 	window = glfwCreateWindow( width, height, "OpenGL Object Viewer", NULL, NULL);
 	if( window == NULL )
 	{
-		cerr << "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n";
 		glfwTerminate();
 		return -1;
 	}
