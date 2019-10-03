@@ -1,7 +1,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
+
+extern "C"
+{
 #include <getopt.h>
+}
+
 #include "options.hpp"
 
 using namespace std;

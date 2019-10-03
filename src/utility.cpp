@@ -3,12 +3,15 @@
 #include <fstream>
 #include <vector>
 
+extern "C"
+{
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
 
 // Includes for PNG
 #include <png.h>
 #include <zlib.h>
+}
 
 using namespace std;
 
