@@ -68,10 +68,10 @@ GLuint load_png(const char *imagepath)
 	auto bit_depth  = png_get_bit_depth(png_ptr, info_ptr);	
 
 	cout << "PNG texture to be loaded: " << imagepath << endl;
-	cout << "Width: " << width << endl;
-	cout << "Height: " << height << endl;
-	cout << "Color type: " << static_cast<int>(color_type) << endl;
-	cout << "Bit depth: " << static_cast<int>(bit_depth) << endl;
+	cout << "PNG Width: " << width << endl;
+	cout << "PNG Height: " << height << endl;
+	cout << "PNG Color type: " << static_cast<int>(color_type) << endl;
+	cout << "PNG Bit depth: " << static_cast<int>(bit_depth) << endl;
 
 	// Convert any color type to 8-bit RGBA
 	if (bit_depth == 16)

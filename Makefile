@@ -16,6 +16,8 @@ OS := $(shell uname)
 
 ifeq ($(OS),Darwin)
 # Mac OS
+	CPPFLAGS+=-I/opt/homebrew/include/
+	LIBS+=-lSDL2 -L/opt/homebrew/lib
 	LIBS+=-framework OpenGL -lGLEW -lglfw -lpng
 else
 # Assume Linux
